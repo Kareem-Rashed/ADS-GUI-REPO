@@ -3,8 +3,6 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QInputDialog>
-
-// Include your Huffman class header
 #include "huffman.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -12,10 +10,9 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
-    // Connect UI buttons to slot functions
-    connect(ui->pushButton_3, &QPushButton::clicked, this, &MainWindow::on_selectFile_clicked);         // "select file" button
-    connect(ui->pushButton_4, &QPushButton::clicked, this, &MainWindow::on_compressWithEncryption_clicked); // "Compress with encryption" button
-    connect(ui->pushButton_2, &QPushButton::clicked, this, &MainWindow::on_decompress_clicked);         // "decompress" button
+    connect(ui->pushButton_3, &QPushButton::clicked, this, &MainWindow::on_selectFile_clicked);
+    connect(ui->pushButton_4, &QPushButton::clicked, this, &MainWindow::on_compressWithEncryption_clicked);
+    connect(ui->pushButton_2, &QPushButton::clicked, this, &MainWindow::on_decompress_clicked);
 }
 
 MainWindow::~MainWindow() {
@@ -26,7 +23,7 @@ void MainWindow::on_selectFile_clicked() {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Select File"), "", tr("All Files (*.*)"));
     if (!fileName.isEmpty()) {
         selectedFilePath = fileName;
-        // Update the label to display the selected file
+        //label to show the file selected
         ui->label->setText("Selected File: " + selectedFilePath);
     } else {
         QMessageBox::warning(this, tr("No File Selected"), tr("Please select a file to proceed."));
@@ -41,7 +38,7 @@ void MainWindow::on_compressWithEncryption_clicked() {
         return;
     }
 
-    // Ask the user for the encryption type
+    //Ask for encryption type
     QStringList encryptionOptions;
     encryptionOptions << "None" << "Caesar";
     bool ok;
@@ -70,12 +67,12 @@ void MainWindow::on_compressWithEncryption_clicked() {
         return;
     }
 
-    // Ensure the output file name has a .huf extension
+    //output file name has .txt extension
     if (!outputFileName.endsWith(".txt", Qt::CaseInsensitive)) {
         outputFileName += ".txt";
     }
 
-    // Perform compression using the Huffman class
+    //compression  using Huffman
     try {
 
         Huffman huffman(selectedFilePath.toStdString());
@@ -116,7 +113,7 @@ void MainWindow::on_decompress_clicked() {
         outputFileName += ".txt";
     }
 
-    // Ask the user for the encryption type
+    // Ask for encryption type
     QStringList encryptionOptions;
     encryptionOptions << "None" << "Caesar";
     bool ok;
@@ -134,7 +131,7 @@ void MainWindow::on_decompress_clicked() {
         return;
     }
 
-    // Perform decompression using the Huffman class
+    //decompression using Huffman
     try {
         Huffman huffman(selectedFilePath.toStdString());
         if(encryptionType.toStdString()=="None")
@@ -151,3 +148,4 @@ void MainWindow::on_decompress_clicked() {
         QMessageBox::critical(this, tr("Error"), tr("Decompression failed: %1").arg(e.what()));
     }
 }
+
